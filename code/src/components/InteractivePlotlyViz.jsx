@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 
-const InteractivePlotlyViz = ({ currentStep, onStepChange }) => {
+const InteractivePlotlyViz = ({ currentQuestion, selectedAnswer, onStepChange }) => {
   const [xPoint, setXPoint] = useState(1);
   const [showDerivative, setShowDerivative] = useState(false);
   const [showTangent, setShowTangent] = useState(false);
@@ -10,47 +10,26 @@ const InteractivePlotlyViz = ({ currentStep, onStepChange }) => {
   const f = (x) => x * Math.exp(x - 1);
   const fPrime = (x) => (1 + x) * Math.exp(x - 1);
   
-  // Actualizar visualización según el paso actual
+  // Actualizar visualización según la pregunta actual
   useEffect(() => {
-    switch(currentStep) {
-      case 0: // Introducción
-        setShowDerivative(false);
-        setShowTangent(false);
-        setShowCalculations(false);
-        break;
-      case 1: // Paso 1: Calcular derivada
+    setXPoint(1); // Siempre fijar en x=1 para esta lección
+    
+    if (currentQuestion >= 0) {
+      // A partir de la primera pregunta, mostrar función original
+      if (currentQuestion >= 1 && selectedAnswer !== undefined) {
+        // Pregunta 1 respondida: mostrar derivada
         setShowDerivative(true);
-        setShowTangent(false);
-        setShowCalculations(false);
-        break;
-      case 2: // Paso 2: Evaluar derivada
-        setShowDerivative(true);
-        setShowTangent(false);
+      }
+      if (currentQuestion >= 2 && selectedAnswer !== undefined) {
+        // Pregunta 2 respondida: mostrar cálculos
         setShowCalculations(true);
-        setXPoint(1); // Fijar punto en x=1
-        break;
-      case 3: // Paso 3: Evaluar función
-        setShowDerivative(true);
-        setShowTangent(false);
-        setShowCalculations(true);
-        setXPoint(1);
-        break;
-      case 4: // Paso 4: Fórmula punto-pendiente
-        setShowDerivative(true);
+      }
+      if (currentQuestion >= 4 && selectedAnswer !== undefined) {
+        // Pregunta 4 respondida: mostrar recta tangente
         setShowTangent(true);
-        setShowCalculations(true);
-        setXPoint(1);
-        break;
-      case 5: // Solución final
-        setShowDerivative(true);
-        setShowTangent(true);
-        setShowCalculations(true);
-        setXPoint(1);
-        break;
-      default:
-        break;
+      }
     }
-  }, [currentStep]);
+  }, [currentQuestion, selectedAnswer]);
   
   const generateData = () => {
     const xRange = [];
@@ -187,30 +166,34 @@ const InteractivePlotlyViz = ({ currentStep, onStepChange }) => {
     modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d', 'autoScale2d']
   };
 
-  const getStepInstructions = () => {
-    switch(currentStep) {
+  const getQuestionInstructions = () => {
+    switch(currentQuestion) {
       case 0:
-        return "Observa la función f(x) = xe^(x-1). Vamos a calcular su recta tangente en x = 1.";
+        return "Observa la función f(x) = xe^(x-1). Necesitamos identificar qué regla usar para derivarla.";
       case 1:
-        return "Ahora se muestra la derivada f'(x) = (1+x)e^(x-1) en línea punteada naranja.";
+        return showDerivative ? 
+          "¡Correcto! Ahora puedes ver la derivada f'(x) = (1+x)e^(x-1) en línea punteada naranja." :
+          "Responde la pregunta para ver cómo se aplica la regla del producto.";
       case 2:
-        return "El punto está fijo en x = 1. Observa el valor de la derivada en este punto.";
+        return showCalculations ? 
+          "¡Exacto! f'(1) = 2. Observa el cálculo en la anotación del gráfico." :
+          "Calcula el valor de la derivada en x = 1.";
       case 3:
-        return "Calculamos f(1) = 1. El punto de tangencia es (1, 1).";
+        return "Ahora calculamos f(1) para encontrar el punto de tangencia.";
       case 4:
-        return "Ahora se muestra la recta tangente y = 2x - 1 en línea roja discontinua.";
-      case 5:
-        return "¡Solución completa! Puedes explorar otros puntos con el deslizador.";
+        return showTangent ? 
+          "¡Perfecto! La recta tangente y = 2x - 1 aparece en línea roja discontinua." :
+          "Con el punto (1,1) y pendiente 2, encuentra la ecuación de la recta tangente.";
       default:
-        return "";
+        return "¡Felicidades! Has completado el ejercicio de recta tangente.";
     }
   };
   
   return (
     <div className="interactive-plotly-viz">
       <div className="step-instructions">
-        <h3>Instrucciones del Paso {currentStep + 1}</h3>
-        <p>{getStepInstructions()}</p>
+        <h3>Visualización - Pregunta {currentQuestion + 1}</h3>
+        <p>{getQuestionInstructions()}</p>
       </div>
 
       <div className="plot-container">
@@ -222,62 +205,23 @@ const InteractivePlotlyViz = ({ currentStep, onStepChange }) => {
         />
       </div>
 
-      {(currentStep === 5 || currentStep === 0) && (
-        <div className="controls">
-          <h3>Controles Interactivos</h3>
-          <div className="control-group">
-            <label htmlFor="x-slider">Coordenada X del punto:</label>
-            <input
-              id="x-slider"
-              type="range"
-              min="-0.5"
-              max="2.5"
-              step="0.1"
-              value={xPoint}
-              onChange={(e) => setXPoint(parseFloat(e.target.value))}
-            />
-            <span className="slider-value">{xPoint}</span>
-          </div>
-          
-          <div className="calculation-display">
-            <h4>Cálculos Actuales:</h4>
-            <p><strong>f({xPoint}) =</strong> {data.point.y.toFixed(3)}</p>
-            <p><strong>f'({xPoint}) =</strong> {data.slope}</p>
-            <p><strong>Ecuación de la recta tangente:</strong> {data.equation}</p>
-          </div>
-        </div>
-      )}
-
-      <div className="graph-controls">
-        <h4>Elementos del Gráfico:</h4>
-        <div className="toggle-controls">
-          <label>
-            <input 
-              type="checkbox" 
-              checked={showDerivative} 
-              onChange={(e) => setShowDerivative(e.target.checked)}
-              disabled={currentStep < 1}
-            />
-            Mostrar derivada f'(x)
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={showTangent} 
-              onChange={(e) => setShowTangent(e.target.checked)}
-              disabled={currentStep < 4}
-            />
-            Mostrar recta tangente
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={showCalculations} 
-              onChange={(e) => setShowCalculations(e.target.checked)}
-              disabled={currentStep < 2}
-            />
-            Mostrar cálculos
-          </label>
+      <div className="visualization-summary">
+        <div className="current-progress">
+          <h4>Progreso de la Visualización:</h4>
+          <ul>
+            <li className={currentQuestion >= 0 ? 'completed' : 'pending'}>
+              ✓ Función original: f(x) = xe^(x-1)
+            </li>
+            <li className={currentQuestion >= 1 && selectedAnswer !== undefined ? 'completed' : 'pending'}>
+              {currentQuestion >= 1 && selectedAnswer !== undefined ? '✓' : '○'} Derivada: f'(x) = (1+x)e^(x-1)
+            </li>
+            <li className={currentQuestion >= 2 && selectedAnswer !== undefined ? 'completed' : 'pending'}>
+              {currentQuestion >= 2 && selectedAnswer !== undefined ? '✓' : '○'} Cálculos en x = 1
+            </li>
+            <li className={currentQuestion >= 4 && selectedAnswer !== undefined ? 'completed' : 'pending'}>
+              {currentQuestion >= 4 && selectedAnswer !== undefined ? '✓' : '○'} Recta tangente: y = 2x - 1
+            </li>
+          </ul>
         </div>
       </div>
     </div>

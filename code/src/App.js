@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import LessonPage from './pages/LessonPage';
 import CoursesPage from './pages/CoursesPage';
+import MiPrimerQuiz from './pages/MiPrimerQuiz';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/lesson/tangent-line" element={<LessonPage />} />
+            <Route path="/quiz/mi-primer-quiz" element={<MiPrimerQuiz/>} />
           </Routes>
         </main>
         <Footer />
