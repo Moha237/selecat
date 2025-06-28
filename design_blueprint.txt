@@ -1,0 +1,122 @@
+1. Information Architecture
+
+1. Homepage / Landing
+   - Hero banner: brief value proposition + “Get Started”
+   - Featured courses carousel
+   - Quick links: “Browse All Courses,” “Latest Tutorials,” “About Us”
+
+2. Courses List
+   - Search / filter bar (by topic, level, popularity)
+   - Grid of Course Cards (title, short blurb, difficulty badge, thumbnail)
+
+3. Course Detail Page
+   - Course header (title, author, level, duration)
+   - “Enroll” or “Start Free Preview” CTA
+   - Module list / syllabus (expandable sections)
+   - Reviews / ratings
+
+4. Lesson Page
+   - Breadcrumbs: Home ▶ Courses ▶ [Course] ▶ [Module] ▶ [Lesson]
+   - Two-column layout:
+     - Left: narrative + formulas + text explanations
+     - Right: interactive Plotly visualization (or embedded iframe)
+   - Underneath: parameter controls (sliders, dropdowns) that re-render the plot
+
+5. Supplementary Sections
+   - Resources: downloadable PDFs, cheat sheets
+   - Community / Forum: Q&A under each lesson
+   - Profile / Dashboard (once logged in): progress tracker, bookmarks, recommended next lessons
+   - About / Contact / FAQ
+
+2. UI & Component Architecture
+
+A. Global Layout
+- Header
+  - Logo (top‐left)
+  - Main nav (Courses, Resources, Community)
+  - Search input
+  - User menu (login/profile)
+- Sidebar (optional, on course pages or dashboard)
+  - Quick jump to modules/lessons
+  - Progress indicator
+- Footer
+  - Links: About, Privacy, Contact, Social icons
+
+B. Core Components
+1. <CourseCard>
+   - Props: thumbnail, title, tags, level, short description
+   - Used in course list and featured carousels
+
+2. <CourseSyllabus>
+   - Expandable tree of modules & lessons
+   - Shows completion status
+
+3. <LessonContent>
+   - Renders markdown / math (KaTeX or MathJax)
+   - Inline code snippets or equations
+
+4. <PlotlyViz>
+   - A wrapper around Plotly.js (or react-plotly.js)
+   - Props: data, layout, config
+   - Exposes onUpdate callbacks for controls
+
+5. <ControlPanel>
+   - Sliders, toggles, inputs bound to lesson parameters
+   - Triggers re-render of <PlotlyViz>
+
+6. <SearchBar> with auto-suggest
+7. <Pagination> or infinite scroll for long lists
+8. <UserProgress> badge / progress bar
+
+C. Directory Structure (example)
+
+/src
+  /components
+    CourseCard.tsx
+    CourseSyllabus.tsx
+    LessonContent.tsx
+    PlotlyViz.tsx
+    ControlPanel.tsx
+    Navbar.tsx
+    Footer.tsx
+  /pages
+    index.tsx        ← Homepage
+    courses.tsx      ← Courses list
+    /courses
+      [id].tsx       ← Course detail
+      [id]/[module]/[lesson].tsx  ← Lesson page
+  /styles
+    globals.css
+    components.css
+  /utils
+    api.ts           ← fetch courses / lessons
+    plotly-config.ts
+  /assets
+    images/
+    icons/
+
+3. Design & Styling Guidelines
+
+- Responsive grid for cards (use CSS Grid or a utility framework like Tailwind)
+- Consistent spacing & typography:
+  - Headings: e.g. 1.5rem for titles, 1.25rem for subtitles
+  - Body text: 1rem, line-height 1.6
+- Color palette:
+  - Primary accent (e.g. deep blue for STEM feel)
+  - Secondary accent (orange or teal for controls & CTAs)
+  - Neutral backgrounds (light gray / white)
+- Interactive affordances:
+  - Hover states on cards & buttons
+  - Smooth transitions for expanding modules
+- Accessibility:
+  - Keyboard navigable controls
+  - ARIA labels on interactive elements
+  - Sufficient color contrast
+
+4. Data Flow & Interactivity
+
+1. Lesson page loads → fetch lesson metadata & default parameters from your API.
+2. Render <LessonContent> and <PlotlyViz> with initial props.
+3. User tweaks a slider in <ControlPanel> → fire an event that updates component state.
+4. State change triggers <PlotlyViz> to call Plotly.react(...) under the hood, updating the plot in place.
+5. Optionally save the user’s parameter choices (for “resume where you left off”) via another API call.

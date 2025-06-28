@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Línea Tangente - Interactivo</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="https://cdn.jsdelivr.net/npm/jsxgraph@1.5.0/distrib/jsxgraphcore.js"></script>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.5.0/distrib/jsxgraph.css" /> -->
+  <!-- <script src="dist/bundle.js"></script> -->
+</head>
+<body>
+  <div class="card">
+    <h2>Encuentra la línea tangente</h2>
+    <p><strong>Problema:</strong> Halla la línea tangente a <em>f(x) = x³ + 5x</em> en el punto <em>x = 1</em>.</p>
+
+    <div id="step1">
+      <div class="question">¿Cuál es la derivada de f(x)?</div>
+      <div class="choices">
+        <label><input type="radio" name="q1" value="a"> f'(x) = 3x² + 5</label>
+        <label><input type="radio" name="q1" value="b"> f'(x) = x² + 5</label>
+        <label><input type="radio" name="q1" value="c"> f'(x) = 3x + 5</label>
+      </div>
+      <button onclick="checkStep1()">Comprobar</button>
+      <div class="feedback" id="feedback1"></div>
+    </div>
+
+    <div id="step2" style="display:none;">
+      <div class="question">¿Cuál es la pendiente de la tangente en x = 1?</div>
+      <div class="choices">
+        <label><input type="radio" name="q2" value="a"> 3</label>
+        <label><input type="radio" name="q2" value="b"> 8</label>
+        <label><input type="radio" name="q2" value="c"> 10</label>
+      </div>
+      <button onclick="checkStep2()">Comprobar</button>
+      <div class="feedback" id="feedback2"></div>
+    </div>
+
+    <div id="step3" style="display:none;">
+      <div class="question">¿Cuál es la ecuación de la línea tangente?</div>
+      <div class="choices">
+        <label><input type="radio" name="q3" value="a"> y = 8x - 2</label>
+        <label><input type="radio" name="q3" value="b"> y = 8x - 3</label>
+        <label><input type="radio" name="q3" value="c"> y = 10x - 3</label>
+      </div>
+      <button onclick="checkStep3()">Comprobar</button>
+      <div class="feedback" id="feedback3"></div>
+    </div>
+
+    <div id="graph" style="display: none;">
+      <h3>Visualización</h3>
+      <div id="jxgbox" class="jxgbox"></div>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
