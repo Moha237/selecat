@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import LessonPage from './pages/LessonPage';
 import CoursesPage from './pages/CoursesPage';
 import MiPrimerQuiz from './pages/MiPrimerQuiz';
+import TangentLineQuizzes from './pages/TangentLineQuizzes';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/lesson/tangent-line" element={<LessonPage />} />
             <Route path="/quiz/mi-primer-quiz" element={<MiPrimerQuiz/>} />
+            <Route path="/quiz/tangent-line" element={<TangentLineQuizzes />} />
+            <Route path="/quiz/tangent-line/:quizId" element={<MiPrimerQuiz />} />
           </Routes>
         </main>
         <Footer />

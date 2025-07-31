@@ -1,0 +1,183 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Usuario Demo",
+      "email": "demo@example.com",
+      "createdAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "quizProgress": [
+    {
+      "id": "1",
+      "userId": "1",
+      "quizId": "polynomial_2_x2",
+      "status": "completed",
+      "score": 85,
+      "totalQuestions": 4,
+      "correctAnswers": 3,
+      "answers": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "timeSpent": 480,
+      "attempts": 1,
+      "completedAt": "2024-01-15T10:30:00Z",
+      "startedAt": "2024-01-15T10:22:00Z",
+      "lastUpdated": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "quizId": "polynomial_2_x0",
+      "status": "completed",
+      "score": 75,
+      "totalQuestions": 4,
+      "correctAnswers": 2,
+      "answers": [
+        1,
+        0
+      ],
+      "currentQuestion": 2,
+      "timeSpent": 12,
+      "attempts": 2,
+      "completedAt": "2025-06-28T16:03:18.455Z",
+      "startedAt": "2024-01-16T09:15:00Z",
+      "lastUpdated": "2025-06-28T16:03:18.455Z"
+    },
+    {
+      "id": "6e8e",
+      "userId": "1",
+      "quizId": "exponential_pure_x0",
+      "status": "completed",
+      "score": 100,
+      "totalQuestions": 4,
+      "correctAnswers": 0,
+      "answers": [],
+      "currentQuestion": 0,
+      "timeSpent": 11,
+      "attempts": 2,
+      "completedAt": "2025-06-28T16:07:25.084Z",
+      "startedAt": "2025-06-28T16:07:13.272Z",
+      "lastUpdated": "2025-06-28T16:07:25.084Z"
+    }
+  ],
+  "quizAttempts": [
+    {
+      "id": "1",
+      "userId": "1",
+      "quizId": "polynomial_2_x2",
+      "score": 85,
+      "timeSpent": 480,
+      "completedAt": "2024-01-15T10:30:00Z",
+      "answers": [
+        0,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "id": "0f79",
+      "userId": "1",
+      "quizId": "polynomial_2_x0",
+      "score": 75,
+      "timeSpent": 12,
+      "completedAt": "2025-06-28T16:03:18.456Z",
+      "answers": [
+        1,
+        0
+      ]
+    },
+    {
+      "id": "ca67",
+      "userId": "1",
+      "quizId": "exponential_pure_x0",
+      "score": 75,
+      "timeSpent": 15,
+      "completedAt": "2025-06-28T16:04:00.041Z",
+      "answers": []
+    },
+    {
+      "id": "cbd8",
+      "userId": "1",
+      "quizId": "exponential_pure_x0",
+      "score": 100,
+      "timeSpent": 11,
+      "completedAt": "2025-06-28T16:07:25.084Z",
+      "answers": []
+    }
+  ],
+  "quizDefinitions": [
+    {
+      "id": "polynomial_2_x2",
+      "title": "f(x) = x² + 3x (en x = 2)",
+      "description": "Función polinomial cuadrática",
+      "difficulty": "beginner",
+      "estimatedTime": "8-12 min",
+      "category": "polynomial",
+      "order": 1,
+      "tags": [
+        "polinomial",
+        "cuadrática",
+        "básico"
+      ]
+    },
+    {
+      "id": "polynomial_2_x0",
+      "title": "f(x) = x² + 3x (en x = 0)",
+      "description": "Función polinomial cuadrática en origen",
+      "difficulty": "beginner",
+      "estimatedTime": "8-12 min",
+      "category": "polynomial",
+      "order": 2,
+      "tags": [
+        "polinomial",
+        "cuadrática",
+        "origen"
+      ]
+    },
+    {
+      "id": "polynomial_3_x1",
+      "title": "f(x) = x³ - 2x (en x = 1)",
+      "description": "Función polinomial cúbica",
+      "difficulty": "intermediate",
+      "estimatedTime": "10-15 min",
+      "category": "polynomial",
+      "order": 3,
+      "tags": [
+        "polinomial",
+        "cúbica",
+        "intermedio"
+      ]
+    },
+    {
+      "id": "exponential_pure_x0",
+      "title": "f(x) = eˣ (en x = 0)",
+      "description": "Función exponencial básica",
+      "difficulty": "intermediate",
+      "estimatedTime": "10-15 min",
+      "category": "exponential",
+      "order": 4,
+      "tags": [
+        "exponencial",
+        "básico"
+      ]
+    },
+    {
+      "id": "trigonometric_sin_x0",
+      "title": "f(x) = sin(x) (en x = 0)",
+      "description": "Función trigonométrica básica",
+      "difficulty": "intermediate",
+      "estimatedTime": "10-15 min",
+      "category": "trigonometric",
+      "order": 5,
+      "tags": [
+        "trigonométrica",
+        "seno"
+      ]
+    }
+  ]
+}

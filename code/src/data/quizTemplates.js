@@ -6,72 +6,59 @@ export const tangentLineQuizTemplate = {
   title: 'Quiz: Recta Tangente',
   description: 'Preguntas de opción múltiple para practicar el cálculo de rectas tangentes',
   
+  // 🆕 Enunciado principal siempre visible
+  getMainStatement: (params) => {
+    return `Calcula la línea tangente de ${params.functionLatex} en x = ${params.pointX}`;
+  },
+  
   generateQuestions: (params) => {
     const { 
       functionLatex, derivativeLatex, pointX, slopeValue, yValue, tangentEquation,
-      customOptions, customQuestions 
+      opcion_1_q1, opcion_2_q1, opcion_3_q1,
+      opcion_1_q2, opcion_2_q2, opcion_3_q2,
+      opcion_1_q3, opcion_2_q3, opcion_3_q3,
+      opcion_1_q4, opcion_2_q4, opcion_3_q4
     } = params;
     
     // 🆕 Función helper para reemplazar placeholders
-    const formatQuestion = (questionTemplate, params) => {
-      return questionTemplate
+    const formatText = (text, params) => {
+      if (!text) return text;
+      return text
         .replace('{functionLatex}', functionLatex)
         .replace('{derivativeLatex}', derivativeLatex)
-        .replace('{pointX}', pointX);
+        .replace('{pointX}', pointX)
+        .replace('{slopeValue}', slopeValue)
+        .replace('{yValue}', yValue)
+        .replace('{tangentEquation}', tangentEquation);
     };
     
     return [
       {
-        id: 0,
-        question: customQuestions?.question1 
-          ? formatQuestion(customQuestions.question1, params)
-          : `Para calcular la recta tangente de ${functionLatex}, ¿qué regla de derivación debes usar?`,
-        options: customOptions?.question1 || [
-          { text: "Regla de la cadena", isCorrect: false },
-          { text: "Regla del producto", isCorrect: true },
-          { text: "Regla del cociente", isCorrect: false },
-          { text: "Derivada directa", isCorrect: false }
-        ],
-        explanation: (
-          <div>
-            <p>Para funciones que son <strong>producto de dos funciones</strong>, como {functionLatex}, necesitamos la regla del producto.</p>
-            <p>La regla del producto establece:</p>
-            <BlockMath math="[u(x) \cdot v(x)]' = u'(x) \cdot v(x) + u(x) \cdot v'(x)" />
-          </div>
-        ),
-        hint: "Identifica si la función es suma, producto, cociente o composición.",
-        topic: "Reglas de derivación"
-      },
-      {
         id: 1,
-        question: customQuestions?.question2 
-          ? formatQuestion(customQuestions.question2, params)
-          : `¿Cuál es la derivada de ${functionLatex}?`,
-        options: customOptions?.question2 || [
-          { text: derivativeLatex, isCorrect: true },
-          { text: functionLatex.replace('f(x)', "f'(x)"), isCorrect: false },
-          { text: "f'(x) = e^(x-1)", isCorrect: false },
-          { text: "f'(x) = x·e^(x-1)", isCorrect: false }
+        question: `Calcula la derivada de ${functionLatex}`,
+        options: [
+          { text: formatText(derivativeLatex, params), isCorrect: true },
+          { text: formatText(opcion_1_q1, params), isCorrect: false },
+          { text: formatText(opcion_2_q1, params), isCorrect: false },
+          { text: formatText(opcion_3_q1, params), isCorrect: false }
         ],
         explanation: (
           <div>
-            <p>Aplicando la regla del producto paso a paso:</p>
-            <p>Sea u(x) = x y v(x) = e^(x-1)</p>
-            <p>Entonces u'(x) = 1 y v'(x) = e^(x-1)</p>
+            <p>Para derivar {functionLatex}, aplicamos las reglas de derivación correspondientes.</p>
             <BlockMath math={`f'(x) = ${derivativeLatex.replace("f'(x) = ", "")}`} />
           </div>
         ),
-        hint: "Recuerda aplicar la regla del producto: (uv)' = u'v + uv'",
-        topic: "Aplicación de reglas"
+        hint: "Identifica qué regla de derivación aplicar según el tipo de función",
+        topic: "Cálculo de derivadas"
       },
       {
         id: 2,
         question: `Si evaluamos la derivada en x = ${pointX}, ¿cuál es el valor de f'(${pointX})?`,
         options: [
-          { text: `f'(${pointX}) = ${slopeValue}`, isCorrect: true },
-          { text: `f'(${pointX}) = ${yValue}`, isCorrect: false },
-          { text: `f'(${pointX}) = 1`, isCorrect: false },
-          { text: `f'(${pointX}) = 0`, isCorrect: false }
+          { text: formatText(`f'(${pointX}) = ${slopeValue}`, params), isCorrect: true },
+          { text: formatText(opcion_1_q2, params), isCorrect: false },
+          { text: formatText(opcion_2_q2, params), isCorrect: false },
+          { text: formatText(opcion_3_q2, params), isCorrect: false }
         ],
         explanation: (
           <div>
@@ -87,10 +74,10 @@ export const tangentLineQuizTemplate = {
         id: 3,
         question: `¿Cuál es el valor de la función original en x = ${pointX}?`,
         options: [
-          { text: `f(${pointX}) = ${yValue}`, isCorrect: true },
-          { text: `f(${pointX}) = ${slopeValue}`, isCorrect: false },
-          { text: `f(${pointX}) = 0`, isCorrect: false },
-          { text: `f(${pointX}) = e`, isCorrect: false }
+          { text: formatText(`f(${pointX}) = ${yValue}`, params), isCorrect: true },
+          { text: formatText(opcion_1_q3, params), isCorrect: false },
+          { text: formatText(opcion_2_q3, params), isCorrect: false },
+          { text: formatText(opcion_3_q3, params), isCorrect: false }
         ],
         explanation: (
           <div>
@@ -104,12 +91,12 @@ export const tangentLineQuizTemplate = {
       },
       {
         id: 4,
-        question: `Con la pendiente m = ${slopeValue} y el punto (${pointX}, ${yValue}), ¿cuál es la ecuación de la recta tangente?`,
+        question: `¿Cuál es la recta tangente de ${functionLatex} en el punto x = ${pointX}?`,
         options: [
-          { text: tangentEquation, isCorrect: true },
-          { text: `y = ${slopeValue}x + ${yValue}`, isCorrect: false },
-          { text: `y = x + ${yValue - pointX}`, isCorrect: false },
-          { text: `y = ${yValue}x - ${slopeValue}`, isCorrect: false }
+          { text: formatText(tangentEquation, params), isCorrect: true },
+          { text: formatText(opcion_1_q4, params), isCorrect: false },
+          { text: formatText(opcion_2_q4, params), isCorrect: false },
+          { text: formatText(opcion_3_q4, params), isCorrect: false }
         ],
         explanation: (
           <div>
@@ -174,41 +161,22 @@ export const quizExamples = {
     yValue: 10,
     slopeValue: 7,
     tangentEquation: "y = 7x - 4",
-    // 🆕 OPCIONES PERSONALIZADAS (opcional)
-    customOptions: {
-      question1: [
-        { text: "{derivativeLatex}", isCorrect: true },
-        { text: "f'(x) = 3x + 4", isCorrect: false },
-        { text: "f'(x) = x^2 + 3", isCorrect: false },
-        { text: "f'(x) = x", isCorrect: false }
-      ],
-      question2: [
-        { text: "f'(x) = 7", isCorrect: true},
-        { text: "f'(x) = 2", isCorrect: false},
-        { text: "f'(x) = 1", isCorrect: false},
-        { text: "f'(x) = 8", isCorrect: false},
-      ],
-      question3: [
-        { text: "f(x) = 4", isCorrect: true},
-        { text: "f(x) = 2", isCorrect: false},
-        { text: "f(x) = 1", isCorrect: false},
-        { text: "f(x) = 3", isCorrect: false},
-      ],
-      question4: [
-        { text: "{tangentEquation}", isCorrect: true},
-        { text: "y = 3x", isCorrect: false},
-        { text: "y = 10x - 4", isCorrect: false},
-        { text: "y = 7", isCorrect: false},
-      ]
-    },
-    // 🆕 FORMATO DE PREGUNTAS PERSONALIZADO (opcional)
-    customQuestions: {
-      question1: "Calcula la derivada de {functionLatex}:",
-      question2: "Cuál es el valor de f'({pointX})?",
-      question3: "Cuál es el valor de f({pointX})?",
-      question4: "Cuál es la ecuación de la recta tangente?"
-      
-    }
+    // 🆕 OPCIONES PERSONALIZADAS para cada pregunta
+    opcion_1_q1: "f'(x) = 3x + 2",
+    opcion_2_q1: "f'(x) = x^2 + 3",
+    opcion_3_q1: "f'(x) = 2x^2 + 3x",
+    
+    opcion_1_q2: "f'(2) = 2",
+    opcion_2_q2: "f'(2) = 10",
+    opcion_3_q2: "f'(2) = 3",
+    
+    opcion_1_q3: "f(2) = 7",
+    opcion_2_q3: "f(2) = 4",
+    opcion_3_q3: "f(2) = 6",
+    
+    opcion_1_q4: "y = 2x + 6",
+    opcion_2_q4: "y = 7x + 10",
+    opcion_3_q4: "y = 10x - 7"
   },
   
   polynomial_2_x0: {  // f(x) = x² + 3x en x = 0
@@ -297,6 +265,7 @@ export const createTangentLineQuiz = (exampleKey) => {
   
   return {
     template: tangentLineQuizTemplate,
+    mainStatement: tangentLineQuizTemplate.getMainStatement(params), // 🆕 Enunciado principal
     questions: tangentLineQuizTemplate.generateQuestions(params),
     metadata: {
       id: `quiz-tangent-line-${exampleKey}`,
@@ -305,11 +274,10 @@ export const createTangentLineQuiz = (exampleKey) => {
       difficulty: 'intermediate',
       tags: ['quiz', 'derivadas', 'recta_tangente'],
       estimatedTime: '8-12 minutos',
-      questionCount: 5,
+      questionCount: 4, // Ahora son exactamente 4 preguntas
       passingScore: 80,
       topics: [
-        'Reglas de derivación',
-        'Aplicación de reglas', 
+        'Cálculo de derivadas',
         'Evaluación de derivadas',
         'Evaluación de funciones',
         'Ecuación punto-pendiente'
